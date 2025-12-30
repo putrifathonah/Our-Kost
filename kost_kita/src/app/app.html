@@ -1,0 +1,146 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <!-- Bagian Navbar -->
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+      <img
+        src="https://marketplace.canva.com/MADpjmy5vys/1/thumbnail_large/canva-isolated-house-icon-flat-design-MADpjmy5vys.png"
+        alt="KosKita"
+        width="36"
+        height="36"
+        class="rounded"
+      />
+      <span class="fw-bold text-black fs-4">KosKita</span>
+    </a>
+
+    <!-- Menu Navbar -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            aria-current="page"
+            >Beranda</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">Tentang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- Bagian Footer -->
+<footer class="footer bg-light pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row gy-4">
+      <!-- Brand -->
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <img
+            src="https://marketplace.canva.com/MADpjmy5vys/1/thumbnail_large/canva-isolated-house-icon-flat-design-MADpjmy5vys.png"
+            width="36"
+            height="36"
+            class="rounded"
+            alt="KosKita"
+          />
+          <h5 class="fw-bold text-black mb-0">KosKita</h5>
+        </div>
+
+        <p class="text-muted small">
+          Platform pencarian kos-kosan terpercaya yang menghubungkan penyewa dengan pemilik kos di
+          seluruh Indonesia.
+        </p>
+
+        <!-- Bagian Social Media -->
+        <div class="d-flex gap-3">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Bagian Navigasi -->
+      <div class="col-md-3">
+        <h6 class="fw-semibold mb-3">Navigasi</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-1">
+            <a routerLink="/" class="text-secondary text-decoration-none">Beranda</a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/about" class="text-secondary text-decoration-none">Tentang</a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/contact" class="text-secondary text-decoration-none">Kontak</a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/profile" class="text-secondary text-decoration-none">Profile</a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/login" class="text-secondary text-decoration-none">Login</a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/register" class="text-secondary text-decoration-none">Register</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Bagian Kontak -->
+      <div class="col-md-5">
+        <h6 class="fw-semibold mb-3">Kontak</h6>
+        <ul class="list-unstyled text-muted small">
+          <li class="mb-2">
+            <i class="bi bi-geo-alt me-2"></i>
+            Jl. Sudirman No. 123, Jakarta Pusat, 10220
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-telephone me-2"></i>
+            +62 21 1234 5678
+          </li>
+          <li>
+            <i class="bi bi-envelope me-2"></i>
+            info@koskita.id
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Bottom -->
+    <div class="d-flex justify-content-between flex-wrap small text-muted">
+      <span>© 2025 KosKita. All rights reserved.</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,115 @@
+<section class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+  <div class="card shadow-lg border-0 rounded-4" style="max-width: 420px; width: 100%">
+    <div class="card-body p-4 p-md-5">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <h4 class="fw-bold mb-2">Login</h4>
+        <p class="text-muted small">Silakan login ke akun Anda</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+        <!-- EMAIL -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold"> <i class="bi bi-envelope me-2"></i>Email </label>
+          <input
+            type="email"
+            class="form-control form-control-lg rounded-3"
+            formControlName="email"
+            placeholder="nama@example.com"
+            [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          />
+
+          <!-- ERROR EMAIL -->
+          <div
+            class="invalid-feedback"
+            *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          >
+            <div *ngIf="loginForm.get('email')?.errors?.['required']">Email wajib diisi</div>
+            <div *ngIf="loginForm.get('email')?.errors?.['email']">Format email tidak valid</div>
+          </div>
+
+          <!-- HINT -->
+          <small
+            class="text-muted"
+            *ngIf="!loginForm.get('email')?.touched || loginForm.get('email')?.valid"
+          >
+            Gunakan email yang terdaftar
+          </small>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold"> <i class="bi bi-lock me-2"></i>Password </label>
+
+          <div class="input-group">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control form-control-lg rounded-start-3"
+              formControlName="password"
+              placeholder="Masukkan password Anda"
+              [class.is-invalid]="
+                loginForm.get('password')?.invalid && loginForm.get('password')?.touched
+              "
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary rounded-end-3"
+              (click)="showPassword = !showPassword"
+            >
+              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+          </div>
+
+          <!-- ERROR PASSWORD -->
+          <div
+            class="invalid-feedback d-block"
+            *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          >
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">Password wajib diisi</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              Password minimal 6 karakter
+            </div>
+          </div>
+        </div>
+
+        <!-- REMEMBER -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe" />
+            <label class="form-check-label" for="rememberMe">Ingat saya</label>
+          </div>
+        </div>
+
+        <!-- ERROR BACKEND -->
+        <div *ngIf="errorMessage" class="alert alert-danger py-2 small">
+          {{ errorMessage }}
+        </div>
+
+        <!-- BUTTON -->
+        <div class="d-grid mb-3">
+          <button
+            type="submit"
+            class="btn btn-success btn-lg rounded-3"
+            [disabled]="loginForm.invalid || isLoading"
+          >
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+            <i *ngIf="!isLoading" class="bi bi-box-arrow-in-right me-2"></i>
+            {{ isLoading ? 'Memproses...' : 'Login' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center text-muted my-3">atau</div>
+
+      <!-- REGISTER -->
+      <div class="text-center">
+        <p class="mb-0 small">
+          Belum punya akun?
+          <a routerLink="/register" class="text-success fw-semibold text-decoration-none">
+            Daftar sekarang
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
