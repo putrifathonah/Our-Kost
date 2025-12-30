@@ -5,19 +5,28 @@ import { Observable } from 'rxjs';
 export interface AuthResponse {
   success: boolean;
   message: string;
+  token?: string;
   data?: {
     id: string;
     name: string;
     email: string;
+    nomorTelepon?: string;
     createdAt?: string;
+  };
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    nomorTelepon?: string;
   };
 }
 
+// Interface untuk request register - TANPA confirmPassword
 export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  nomorTelepon: string;
 }
 
 export interface LoginRequest {
@@ -41,12 +50,20 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
   }
 
-  getProfile(userId: string): Observable<AuthResponse> {
-    return this.http.get<AuthResponse>(`${this.apiUrl}/profile/${userId}`);
+  getProfile(): Observable<AuthResponse> {
+    return this.http.get<AuthResponse>(`${this.apiUrl}/profile`);
   }
 
   saveUserData(userData: any): void {
     localStorage.setItem('user', JSON.stringify(userData));
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
   getUserData(): any {
@@ -55,10 +72,11 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.getUserData() !== null;
+    return this.getToken() !== null;
   }
 
   logout(): void {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 }

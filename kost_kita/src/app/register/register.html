@@ -59,15 +59,15 @@
           <input
             type="text"
             class="form-control form-control-lg rounded-3"
-            formControlName="phone"
+            formControlName="nomorTelepon"
             placeholder="08xx xxxx xxxx"
             [class.is-invalid]="
-              registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched
+              registerForm.get('nomorTelepon')?.invalid && registerForm.get('nomorTelepon')?.touched
             "
           />
           <div
             class="invalid-feedback"
-            *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+            *ngIf="registerForm.get('nomorTelepon')?.invalid && registerForm.get('nomorTelepon')?.touched"
           >
             Nomor telepon wajib diisi
           </div>
