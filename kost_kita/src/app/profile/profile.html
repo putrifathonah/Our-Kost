@@ -1,214 +1,194 @@
 <div class="container py-5">
   <!-- Header Section -->
-  <div class="row mb-5">
+  <div class="row mb-4">
     <div class="col-12">
-      <h1 class="fw-bold mb-2">Profil Saya</h1>
+      <h2 class="fw-bold">Profil Saya</h2>
     </div>
   </div>
 
-  <!-- Profile Card -->
+  <!-- content awal -->
   <div class="row">
-    <!-- Left column: avatar & status -->
-    <div class="col-lg-4 mb-4">
-      <div class="card shadow-sm border-0 text-center">
-        <div class="card-body p-4 d-flex flex-column align-items-center">
+    <!-- Bagian kiri sertakan avatar -->
+    <div class="col-lg-3 mb-4">
+      <div class="card border-0 shadow-sm text-center">
+        <div class="card-body p-4">
           <img
             [src]="userProfile.avatar"
             alt="Avatar"
-            class="rounded-circle img-fluid mb-3 w-50 border border-success"
+            class="rounded-circle mb-3"
+            style="width: 120px; height: 120px; object-fit: cover"
           />
-          <h4 class="fw-bold mb-1">{{ userProfile.nama }}</h4>
-          <p class="text-muted mb-3">{{ userProfile.pekerjaan }}</p>
+          <h5 class="fw-bold mb-1">{{ userProfile.nama }}</h5>
+          <p class="text-success small">{{ userProfile.pekerjaan }}</p>
         </div>
       </div>
+    </div>
 
-      <hr />
-
-      <!-- Right column: details -->
-      <div class="col-lg-8">
-        <div class="card shadow-sm border-0">
-          <div
-            class="card-header bg-white border-bottom d-flex justify-content-between align-items-center"
+    <!-- Bagian kanan detail-->
+    <div class="col-lg-9">
+      <div class="card border-0 shadow-sm mb-4">
+        <div
+          class="card-header bg-white border-bottom d-flex justify-content-between align-items-center"
+        >
+          <h5 class="mb-0 fw-bold">Informasi Pribadi</h5>
+          <button
+            class="btn btn-sm"
+            [ngClass]="isEditing ? 'btn-outline-secondary' : 'btn-success'"
+            (click)="toggleEdit()"
           >
-            <h5 class="mb-0 fw-bold">Informasi Pribadi</h5>
-            <button
-              class="btn btn-sm"
-              [ngClass]="isEditing ? 'btn-secondary' : 'btn-primary'"
-              (click)="toggleEdit()"
-            >
-              <i class="bi me-1" [ngClass]="isEditing ? 'bi-x' : 'bi-pencil'"></i>
-              {{ isEditing ? 'Batal' : 'Edit' }}
-            </button>
+            <i class="bi me-1" [ngClass]="isEditing ? 'bi-x' : 'bi-pencil'"></i>
+            {{ isEditing ? 'Batal' : 'Edit' }}
+          </button>
+        </div>
+
+        <div class="card-body p-4">
+          <!-- Tampilan Mode -->
+          <div *ngIf="!isEditing">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">NAMA LENGKAP</p>
+                <p class="fw-bold text-success">{{ userProfile.nama }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">EMAIL</p>
+                <p class="fw-bold text-success">{{ userProfile.email }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">NO. TELEPON</p>
+                <p class="fw-bold text-success">{{ userProfile.noTelepon }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">JENIS KELAMIN</p>
+                <p class="fw-bold text-success">{{ userProfile.jenisKelamin }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">TANGGAL LAHIR</p>
+                <p class="fw-bold text-success">
+                  {{ userProfile.tanggalLahir | date : 'dd MMMM yyyy' }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">PEKERJAAN</p>
+                <p class="fw-bold text-success">{{ userProfile.pekerjaan }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">KOTA ASAL</p>
+                <p class="fw-bold text-success">{{ userProfile.kotaAsal }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-muted small mb-1">NO. KTP</p>
+                <p class="fw-bold text-success">{{ userProfile.noKTP }}</p>
+              </div>
+              <div class="col-12">
+                <p class="text-muted small mb-1">ALAMAT</p>
+                <p class="fw-bold text-success">{{ userProfile.alamat }}</p>
+              </div>
+            </div>
           </div>
 
-          <div class="card-body p-4">
-            <!-- Display Mode -->
-            <div *ngIf="!isEditing">
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">Nama Lengkap</label>
-                  <p class="fw-bold">{{ userProfile.nama }}</p>
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">Email</label>
-                  <p class="fw-bold">{{ userProfile.email }}</p>
-                </div>
+          <!-- Mode Edit -->
+          <div *ngIf="isEditing">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">NAMA LENGKAP</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="editProfile.nama"
+                  placeholder="Masukkan nama lengkap"
+                />
               </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">No. Telepon</label>
-                  <p class="fw-bold">{{ userProfile.noTelepon }}</p>
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">Jenis Kelamin</label>
-                  <p class="fw-bold">{{ userProfile.jenisKelamin }}</p>
-                </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">EMAIL</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="editProfile.email"
+                  placeholder="Masukkan email"
+                />
               </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">Tanggal Lahir</label>
-                  <p class="fw-bold">{{ userProfile.tanggalLahir | date : 'dd MMMM yyyy' }}</p>
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">Pekerjaan</label>
-                  <p class="fw-bold">{{ userProfile.pekerjaan }}</p>
-                </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">NO. TELEPON</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  [(ngModel)]="editProfile.noTelepon"
+                  placeholder="Masukkan no. telepon"
+                />
               </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">Kota Asal</label>
-                  <p class="fw-bold">{{ userProfile.kotaAsal }}</p>
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold">No. KTP</label>
-                  <p class="fw-bold">{{ userProfile.noKTP }}</p>
-                </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">JENIS KELAMIN</label>
+                <select class="form-select" [(ngModel)]="editProfile.jenisKelamin">
+                  <option>Laki-laki</option>
+                  <option>Perempuan</option>
+                </select>
               </div>
-
-              <div class="row">
-                <div class="col-12">
-                  <label class="text-muted small fw-semibold">Alamat</label>
-                  <p class="fw-bold">{{ userProfile.alamat }}</p>
-                </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">TANGGAL LAHIR</label>
+                <input type="date" class="form-control" [(ngModel)]="editProfile.tanggalLahir" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">PEKERJAAN</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="editProfile.pekerjaan"
+                  placeholder="Masukkan pekerjaan"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">KOTA ASAL</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="editProfile.kotaAsal"
+                  placeholder="Masukkan kota asal"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-semibold">NO. KTP</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="editProfile.noKTP"
+                  placeholder="Masukkan no. KTP"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label text-muted small fw-semibold">ALAMAT</label>
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  [(ngModel)]="editProfile.alamat"
+                  placeholder="Masukkan alamat lengkap"
+                ></textarea>
               </div>
             </div>
 
-            <!-- Edit -->
-            <div *ngIf="isEditing">
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">Nama Lengkap</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="editProfile.nama"
-                    placeholder="Masukkan nama lengkap"
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    [(ngModel)]="editProfile.email"
-                    placeholder="Masukkan email"
-                  />
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">No. Telepon</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    [(ngModel)]="editProfile.noTelepon"
-                    placeholder="Masukkan no. telepon"
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">Jenis Kelamin</label>
-                  <select class="form-select" [(ngModel)]="editProfile.jenisKelamin">
-                    <option>Laki-laki</option>
-                    <option>Perempuan</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">Tanggal Lahir</label>
-                  <input type="date" class="form-control" [(ngModel)]="editProfile.tanggalLahir" />
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">Pekerjaan</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="editProfile.pekerjaan"
-                    placeholder="Masukkan pekerjaan"
-                  />
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">Kota Asal</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="editProfile.kotaAsal"
-                    placeholder="Masukkan kota asal"
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="text-muted small fw-semibold mb-2">No. KTP</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="editProfile.noKTP"
-                    placeholder="Masukkan no. KTP"
-                  />
-                </div>
-              </div>
-
-              <div class="row mb-4">
-                <div class="col-12">
-                  <label class="text-muted small fw-semibold mb-2">Alamat</label>
-                  <textarea
-                    class="form-control"
-                    rows="3"
-                    [(ngModel)]="editProfile.alamat"
-                    placeholder="Masukkan alamat lengkap"
-                  ></textarea>
-                </div>
-              </div>
-
-              <!-- Button Aksi -->
-              <div class="d-grid gap-2">
-                <button class="btn btn-success" (click)="saveProfile()">
-                  <i class="bi bi-check-circle me-2"></i>Simpan Perubahan
+            <!-- Button Aksi -->
+            <div class="row g-2 mt-3">
+              <div class="col-6">
+                <button class="btn btn-success w-100" (click)="saveProfile()">
+                  <i class="bi bi-check-circle me-2"></i>Simpan
                 </button>
-                <button class="btn btn-outline-secondary" (click)="cancelEdit()">
+              </div>
+              <div class="col-6">
+                <button class="btn btn-outline-secondary w-100" (click)="cancelEdit()">
                   <i class="bi bi-x-circle me-2"></i>Batal
                 </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="card shadow-sm border-0 mt-4">
-          <div class="card-body">
-            <h5 class="fw-bold mb-3">Keamanan Akun</h5>
-            <div class="d-grid gap-2">
-              <button class="btn btn-outline-danger" (click)="logout()">
-                <i class="bi bi-box-arrow-right me-2"></i>Logout
-              </button>
-            </div>
-          </div>
+      <!-- Keamanan Akun -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="fw-bold mb-3">Keamanan Akun</h5>
+          <button class="btn btn-outline-success w-100" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-2"></i>Logout
+          </button>
         </div>
       </div>
     </div>
