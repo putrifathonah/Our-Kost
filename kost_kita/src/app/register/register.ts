@@ -8,8 +8,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../services/auth';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -25,13 +24,23 @@ export class Register {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group(
       {
         name: ['', [Validators.required, Validators.minLength(2)]],
         email: ['', [Validators.required, Validators.email]],
-        nomorTelepon: ['', [Validators.required, Validators.minLength(10)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,13}$/)]],
+
+        // ✅ Password:
+        // - minimal 8 karakter
+        // - harus ada huruf
+        // - harus ada angka
+        // - TIDAK BOLEH simbol
+        password: [
+          '',
+          [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)],
+        ],
+
         confirmPassword: ['', Validators.required],
       },
       { validators: this.passwordMatchValidator }
@@ -46,41 +55,24 @@ export class Register {
 
   submitRegister(): void {
     if (this.registerForm.invalid) {
-      this.errorMessage = 'Mohon lengkapi semua field dengan benar';
+      this.registerForm.markAllAsTouched();
       return;
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
 
-    // Kirim semua field TERMASUK confirmPassword untuk validasi backend
-    const payload = {
-      name: this.registerForm.get('name')?.value,
-      email: this.registerForm.get('email')?.value,
-      password: this.registerForm.get('password')?.value,
-      confirmPassword: this.registerForm.get('confirmPassword')?.value,
-      nomorTelepon: this.registerForm.get('nomorTelepon')?.value,
+    const user = {
+      id: 'local-' + Date.now(),
+      name: this.registerForm.value.name,
+      email: this.registerForm.value.email,
+      phone: this.registerForm.value.phone,
     };
 
-    console.log('Payload yang dikirim:', payload);
-
-    this.authService.register(payload).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        this.successMessage = res.message || 'Registrasi berhasil, silakan login';
-        this.registerForm.reset();
-
-        // Optional: Redirect ke login setelah 2 detik
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Registrasi gagal';
-        console.error('Register error:', err);
-      },
-    });
+    // simulasi proses register + auto login
+    setTimeout(() => {
+      localStorage.setItem('user', JSON.stringify(user));
+      this.isLoading = false;
+      window.location.href = '/';
+    }, 800);
   }
 }

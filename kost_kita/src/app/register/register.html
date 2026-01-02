@@ -1,7 +1,6 @@
 <section class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
   <div class="card shadow-lg border-0 rounded-4" style="max-width: 420px; width: 100%">
     <div class="card-body p-4 p-md-5">
-      <!-- Title -->
       <div class="text-center mb-4">
         <h4 class="fw-bold mb-2">Register</h4>
         <p class="text-muted small">Silakan buat akun baru</p>
@@ -10,86 +9,65 @@
       <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
         <!-- NAMA -->
         <div class="mb-4">
-          <label class="form-label fw-semibold">
-            <i class="bi bi-person me-2"></i>Nama Lengkap
-          </label>
+          <label class="form-label fw-semibold">Nama Lengkap</label>
           <input
             type="text"
-            class="form-control form-control-lg rounded-3"
+            class="form-control form-control-lg"
             formControlName="name"
             placeholder="Masukkan nama lengkap"
             [class.is-invalid]="
-              registerForm.get('name')?.invalid && registerForm.get('name')?.touched
+              registerForm.get('name')?.touched && registerForm.get('name')?.invalid
             "
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
-          >
-            Nama wajib diisi
-          </div>
+          <div class="invalid-feedback">Nama wajib diisi (min. 2 karakter)</div>
         </div>
 
         <!-- EMAIL -->
         <div class="mb-4">
-          <label class="form-label fw-semibold"> <i class="bi bi-envelope me-2"></i>Email </label>
+          <label class="form-label fw-semibold">Email</label>
           <input
             type="email"
-            class="form-control form-control-lg rounded-3"
+            class="form-control form-control-lg"
             formControlName="email"
-            placeholder="nama@example.com"
+            placeholder="nama@email.com"
             [class.is-invalid]="
-              registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+              registerForm.get('email')?.touched && registerForm.get('email')?.invalid
             "
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-          >
-            <div *ngIf="registerForm.get('email')?.errors?.['required']">Email wajib diisi</div>
-            <div *ngIf="registerForm.get('email')?.errors?.['email']">Format email tidak valid</div>
-          </div>
+          <div class="invalid-feedback">Email wajib diisi dan harus valid</div>
         </div>
 
         <!-- TELEPON -->
         <div class="mb-4">
-          <label class="form-label fw-semibold">
-            <i class="bi bi-telephone me-2"></i>No. Telepon
-          </label>
+          <label class="form-label fw-semibold">No. Telepon</label>
           <input
             type="text"
-            class="form-control form-control-lg rounded-3"
-            formControlName="nomorTelepon"
-            placeholder="08xx xxxx xxxx"
+            class="form-control form-control-lg"
+            formControlName="phone"
+            placeholder="08xxxxxxxxxx"
             [class.is-invalid]="
-              registerForm.get('nomorTelepon')?.invalid && registerForm.get('nomorTelepon')?.touched
+              registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid
             "
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="registerForm.get('nomorTelepon')?.invalid && registerForm.get('nomorTelepon')?.touched"
-          >
-            Nomor telepon wajib diisi
-          </div>
+          <div class="invalid-feedback">Nomor telepon harus 10–13 digit angka</div>
         </div>
 
         <!-- PASSWORD -->
         <div class="mb-4">
-          <label class="form-label fw-semibold"> <i class="bi bi-lock me-2"></i>Password </label>
-
+          <label class="form-label fw-semibold">Password</label>
           <div class="input-group">
             <input
               [type]="showPassword ? 'text' : 'password'"
-              class="form-control form-control-lg rounded-start-3"
+              class="form-control form-control-lg"
               formControlName="password"
-              placeholder="Minimal 6 karakter"
+              placeholder="Minimal 8 karakter (huruf & angka)"
               [class.is-invalid]="
-                registerForm.get('password')?.invalid && registerForm.get('password')?.touched
+                registerForm.get('password')?.touched && registerForm.get('password')?.invalid
               "
             />
             <button
               type="button"
-              class="btn btn-outline-secondary rounded-end-3"
+              class="btn btn-outline-secondary"
               (click)="showPassword = !showPassword"
             >
               <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
@@ -98,63 +76,45 @@
 
           <div
             class="invalid-feedback d-block"
-            *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
           >
-            Password minimal 6 karakter
+            Password minimal 8 karakter, kombinasi huruf & angka, tanpa simbol
           </div>
         </div>
 
         <!-- KONFIRMASI PASSWORD -->
         <div class="mb-4">
-          <label class="form-label fw-semibold">
-            <i class="bi bi-lock-fill me-2"></i>Konfirmasi Password
-          </label>
+          <label class="form-label fw-semibold">Konfirmasi Password</label>
           <input
             type="password"
-            class="form-control form-control-lg rounded-3"
+            class="form-control form-control-lg"
             formControlName="confirmPassword"
             placeholder="Ulangi password"
             [class.is-invalid]="
-              registerForm.get('confirmPassword')?.invalid &&
-              registerForm.get('confirmPassword')?.touched
+              registerForm.get('confirmPassword')?.touched && registerForm.hasError('mismatch')
             "
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="
-              registerForm.get('confirmPassword')?.invalid &&
-              registerForm.get('confirmPassword')?.touched
-            "
-          >
-            Password tidak sama
-          </div>
+          <div class="invalid-feedback">Password tidak sama</div>
         </div>
 
         <!-- BUTTON -->
         <div class="d-grid mb-3">
           <button
             type="submit"
-            class="btn btn-success btn-lg rounded-3"
-            style="height: 56px"
-            [disabled]="registerForm.invalid || isLoading ? true : null"
+            class="btn btn-success btn-lg"
+            [disabled]="registerForm.invalid || isLoading"
           >
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-            <i *ngIf="!isLoading" class="bi bi-person-plus me-2"></i>
             {{ isLoading ? 'Memproses...' : 'Daftar' }}
           </button>
         </div>
       </form>
 
-      <div class="text-center text-muted my-3">atau</div>
-
-      <!-- LOGIN -->
       <div class="text-center">
-        <p class="mb-0 small">
+        <small>
           Sudah punya akun?
-          <a routerLink="/login" class="text-success fw-semibold text-decoration-none">
-            Login sekarang
-          </a>
-        </p>
+          <a routerLink="/login" class="text-success fw-semibold">Login</a>
+        </small>
       </div>
     </div>
   </div>

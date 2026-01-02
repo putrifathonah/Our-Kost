@@ -36,12 +36,15 @@ export class Login {
       return;
     }
 
-    this.successMessage = 'Login berhasil (simulasi frontend)';
+    const email = this.loginForm.value.email;
+
+    // 🔑 Ambil data user dari register
+    const registeredUser = JSON.parse(localStorage.getItem('registeredUser') || 'null');
 
     const user = {
       id: 'local-1',
-      name: 'Pengguna Demo',
-      email: this.loginForm.value.email,
+      name: registeredUser?.name || email.split('@')[0],
+      email: email,
     };
 
     this.authService.saveUserData(user);
@@ -49,40 +52,4 @@ export class Login {
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
     this.router.navigateByUrl(returnUrl);
   }
-
-  //   submitLogin(): void {
-  //     if (this.loginForm.invalid) {
-  //       this.errorMessage = 'Mohon lengkapi semua field dengan benar';
-  //       return;
-  //     }
-
-  //     this.isLoading = true;
-  //     this.errorMessage = '';
-  //     this.successMessage = '';
-
-  //     const loginData = this.loginForm.value;
-
-  //     this.authService.login(loginData).subscribe({
-  //       next: (response) => {
-  //         this.isLoading = false;
-  //         this.successMessage = response.message || 'Login berhasil';
-
-  //         if (response.data) {
-  //           this.authService.saveUserData(response.data);
-  //         }
-
-  //         setTimeout(() => {
-  //           this.router.navigate(['/']);
-  //         }, 1000);
-  //       },
-  //       error: (error) => {
-  //         this.isLoading = false;
-  //         this.errorMessage = error.error?.message || 'Email atau password salah';
-
-  //         setTimeout(() => {
-  //           this.errorMessage = '';
-  //         }, 5000);
-  //       },
-  //     });
-  //   }
 }
