@@ -1,16 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-
-interface Kos {
-  id: number;
-  nama: string;
-  lokasi: string;
-  harga: string;
-  rating: number;
-  label: string;
-  image: string;
-}
+import { Kos } from '../home/housing.model';
 
 @Component({
   selector: 'app-detail',

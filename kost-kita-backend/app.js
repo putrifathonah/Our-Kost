@@ -1,38 +1,49 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require("cors");
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
 
-require('./mvc/model/db');
+// Load MongoDB connection
+require("./mvc/models/db");
 
-var indexRouter = require('./mvc/routes/index');
-var usersRouter = require('./mvc/routes/users');
+var indexRouter = require("./mvc/routes/index");
+var housingRouter = require("./mvc/routes/housing");
 
 var app = express();
 
-app.use(cors());
-app.use(logger('dev'));
+// View engine setup
+app.set("views", path.join(__dirname, "mvc", "views"));
+app.set("view engine", "ejs");
+
+// Middleware
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ ROUTES SETELAH MIDDLEWARE
-app.use('/api/auth', usersRouter);
+// CORS Configuration
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 
-// catch 404
-app.use(function(req, res, next) {
+// Routes
+app.use("/", indexRouter);
+app.use("/housing", housingRouter);
+
+// 404 Handler
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message,
-  });
+// Error Handler
+app.use(function (err, req, res, next) {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.status(err.status || 500);
+  res.render("error");
 });
 
 module.exports = app;

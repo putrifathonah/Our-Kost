@@ -1,14 +1,9 @@
-const express = require("express");
-const router = express.Router();
-const authController = require("../controllers/authController");
+var express = require('express');
+var router = express.Router();
 
-// POST /api/auth/register - Register user baru
-router.post("/register", authController.register);
-
-// POST /api/auth/login - Login user
-router.post("/login", authController.login);
-
-// GET /api/auth/profile/:id - Get user profile
-router.get("/profile/:id", authController.getProfile);
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+});
 
 module.exports = router;

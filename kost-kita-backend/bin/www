@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('kost-kita-backend:server');
+var debug = require('debug')('kost-backend:server');
 var http = require('http');
 
 /**
