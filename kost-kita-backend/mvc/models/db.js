@@ -1,5 +1,8 @@
 let mongoose = require("mongoose");
-let dbURI = "mongodb://127.0.0.1:27017/kost";
+require("dotenv").config();
+
+// ambil dari .env
+const dbURI = process.env.MONGODB_URI;
 
 mongoose.connect(dbURI, {
     // useNewURLParser: true
