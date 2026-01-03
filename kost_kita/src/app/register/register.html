@@ -14,12 +14,12 @@
             type="text"
             class="form-control form-control-lg"
             formControlName="name"
-            placeholder="Masukkan nama lengkap"
+            placeholder="Masukkan nama lengkap Anda"
             [class.is-invalid]="
               registerForm.get('name')?.touched && registerForm.get('name')?.invalid
             "
           />
-          <div class="invalid-feedback">Nama wajib diisi (min. 2 karakter)</div>
+          <div class="invalid-feedback">Nama wajib diisi</div>
         </div>
 
         <!-- EMAIL -->
@@ -34,7 +34,7 @@
               registerForm.get('email')?.touched && registerForm.get('email')?.invalid
             "
           />
-          <div class="invalid-feedback">Email wajib diisi dan harus valid</div>
+          <div class="invalid-feedback">Email wajib diisi</div>
         </div>
 
         <!-- TELEPON -->
@@ -49,7 +49,7 @@
               registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid
             "
           />
-          <div class="invalid-feedback">Nomor telepon harus 10–13 digit angka</div>
+          <div class="invalid-feedback">Nomor telepon harus 10–13 digit</div>
         </div>
 
         <!-- PASSWORD -->
@@ -60,7 +60,7 @@
               [type]="showPassword ? 'text' : 'password'"
               class="form-control form-control-lg"
               formControlName="password"
-              placeholder="Minimal 8 karakter (huruf & angka)"
+              placeholder="Minimal 8 karakter"
               [class.is-invalid]="
                 registerForm.get('password')?.touched && registerForm.get('password')?.invalid
               "

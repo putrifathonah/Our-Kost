@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { HousingService } from '../services/housing';
+import { Kos } from './housing.model'; // sesuaikan path model
 
 @Component({
   selector: 'app-home',
@@ -9,8 +11,19 @@ import { RouterLink } from '@angular/router';
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './home.html',
 })
-export class Home {
-  kosPopuler = [
+export class Home implements OnInit {
+  // ===== STATE =====
+  kosList: Kos[] = [];
+  filteredKos: Kos[] = [];
+  searchQuery: string = '';
+  selectedCity: string = 'all';
+  isLoading: boolean = false;
+  errorMessage: string = '';
+
+  cities = ['Semua Lokasi', 'Jakarta', 'Bandung', 'Yogyakarta', 'Surabaya'];
+
+  // ===== FALLBACK DATA (DUMMY) =====
+  private fallbackData: Kos[] = [
     {
       id: 1,
       nama: 'Kos Nyaman Dekat UI Depok',
@@ -94,14 +107,71 @@ export class Home {
     },
   ];
 
-  searchQuery: string = '';
-  filteredKos: any[] = [...this.kosPopuler];
-  selectedCity: string = '';
-  cities = ['Jakarta', 'Bandung', 'Yogyakarta', 'Surabaya'];
+  constructor(private housingService: HousingService) {}
 
+  // ===== INIT =====
+  ngOnInit(): void {
+    // Set default dengan fallback data
+    this.kosList = this.fallbackData;
+    this.filteredKos = this.fallbackData;
+    this.loadKos();
+  }
+
+  // ===== LOAD DATA (BACKEND → FALLBACK) =====
+  loadKos() {
+    // Hanya tampilkan loading jika belum ada data
+    if (this.kosList.length === 0) {
+      this.isLoading = true;
+    }
+    this.errorMessage = '';
+
+    this.housingService.getAllHousing().subscribe({
+      next: (data: any[]) => {
+        console.log('RAW API RESPONSE:', data);
+        // toleransi terhadap bentuk respons yang berbeda
+        let list: any[] = [];
+        if (Array.isArray(data)) {
+          list = data;
+        } else if (data && Array.isArray((data as any).data)) {
+          list = (data as any).data;
+        } else if (data && Array.isArray((data as any).housing)) {
+          list = (data as any).housing;
+        }
+
+        this.kosList = list.map((item) => ({
+          id: item.id ?? item._id ?? null,
+          nama: item.nama ?? item.title ?? 'Kos Tanpa Nama',
+          lokasi: item.lokasi ?? item.location ?? '-',
+          harga: item.harga ?? (item.price ? `Rp ${item.price}` : '-'),
+          rating: item.rating ?? 0,
+          label: item.label ?? item.type ?? 'Kos',
+          image: item.image ?? 'https://via.placeholder.com/400x250',
+        }));
+
+        this.filteredKos = [...this.kosList];
+        this.isLoading = false;
+        console.log('Parsed kosList length:', this.kosList.length);
+      },
+      error: (err) => {
+        console.error('API ERROR:', err);
+        this.kosList = this.fallbackData;
+        this.filteredKos = this.fallbackData;
+        this.isLoading = false;
+        this.errorMessage = 'Menggunakan data demo';
+      },
+    });
+  }
+
+  // ===== SEARCH =====
   onSearch() {
-    const query = this.searchQuery.toLowerCase();
-    this.filteredKos = this.kosPopuler.filter(
+    const query = this.searchQuery.toLowerCase().trim();
+
+    if (!query) {
+      this.filteredKos = [...this.kosList];
+      return;
+    }
+
+    this.filteredKos = this.kosList.filter(
       (kos) =>
         kos.nama.toLowerCase().includes(query) ||
         kos.lokasi.toLowerCase().includes(query) ||
@@ -109,17 +179,22 @@ export class Home {
     );
   }
 
+  // ===== FILTER BY CITY =====
   filterByCity(city: string) {
-    if (this.selectedCity === city) {
-      // Jika kota yang sama diklik, tampilkan semua kos
-      this.selectedCity = '';
-      this.filteredKos = [...this.kosPopuler];
-    } else {
-      // Filter kos berdasarkan kota yang dipilih
-      this.selectedCity = city;
-      this.filteredKos = this.kosPopuler.filter((kos) =>
-        kos.lokasi.toLowerCase().includes(city.toLowerCase())
-      );
+    if (city === 'Semua Lokasi') {
+      this.selectedCity = 'all';
+      this.filteredKos = [...this.kosList];
+      return;
+    }
+
+    this.selectedCity = city;
+    this.filteredKos = this.kosList.filter((kos) =>
+      kos.lokasi.toLowerCase().includes(city.toLowerCase())
+    );
+
+    // tetap respect search
+    if (this.searchQuery) {
+      this.onSearch();
     }
   }
 }

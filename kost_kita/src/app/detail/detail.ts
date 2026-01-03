@@ -89,15 +89,7 @@ export class Detail implements OnInit {
       label: 'Kos Putri',
       image: 'https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg',
     },
-    {
-      id: 9,
-      nama: 'Kos Modern Area Setiabudi',
-      lokasi: 'Setiabudi, Bandung',
-      harga: 'Rp 2.200.000 / bulan',
-      rating: 4.8,
-      label: 'Kos Putra',
-      image: 'https://images.pexels.com/photos/90319/pexels-photo-90319.jpeg',
-    },
+
   ];
 
   constructor(private route: ActivatedRoute, private router: Router) {}

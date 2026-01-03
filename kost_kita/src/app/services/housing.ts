@@ -19,7 +19,7 @@ export class HousingService {
     return this.http.get<Housing>(`${this.apiUrl}/${id}`);
   }
 
-  filterHousingByType(type: string): Observable<Housing[]> {
-    return this.http.get<Housing[]>(`${this.apiUrl}?type=${type}`);
+  filterHousingByType(label: string): Observable<Housing[]> {
+    return this.http.get<Housing[]>(`${this.apiUrl}?label=${label}`);
   }
 }
