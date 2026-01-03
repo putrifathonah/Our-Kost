@@ -6,6 +6,20 @@
         <p class="text-muted small">Silakan buat akun baru</p>
       </div>
 
+      <!-- Success Alert -->
+      <div
+        class="alert alert-success alert-dismissible fade show"
+        role="alert"
+        *ngIf="successMessage"
+      >
+        {{ successMessage }}
+      </div>
+
+      <!-- Error Alert -->
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
       <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
         <!-- NAMA -->
         <div class="mb-4">

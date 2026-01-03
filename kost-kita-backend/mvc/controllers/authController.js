@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken"); // import jwt
 
@@ -9,7 +10,7 @@ const register = async (req, res) => {
     const { name, email, phone, password, confirmPassword } = req.body;
 
     // Validasi input
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !phone || !password || !confirmPassword) {
       return res.status(400).json({
         success: false,
         message: "Semua field harus diisi",
@@ -30,6 +31,15 @@ const register = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Format email tidak valid",
+      });
+    }
+
+    // Validasi phone format (10-15 digit)
+    const phoneRegex = /^[0-9]{10,15}$/;
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({
+        success: false,
+        message: "Nomor telepon harus 10-15 digit",
       });
     }
 
@@ -62,6 +72,7 @@ const register = async (req, res) => {
     const newUser = new User({
       name: name.trim(),
       email: email.toLowerCase().trim(),
+      phone: phone.trim(),
       password: password,
     });
 
