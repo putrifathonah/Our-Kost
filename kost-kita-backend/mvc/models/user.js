@@ -38,33 +38,20 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash password sebelum disimpan
-userSchema.pre("save", async function(next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 // Method untuk compare password
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
   } catch (error) {
     throw error;
   }
 };
-
-// Update timestamp saat document di-update
-userSchema.pre("findOneAndUpdate", function(next) {
-  this.set({ updatedAt: Date.now() });
-  next();
-});
 
 module.exports = mongoose.model("User", userSchema, "users");

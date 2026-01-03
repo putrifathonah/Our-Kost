@@ -43,11 +43,11 @@ const register = async (req, res) => {
       });
     }
 
-    // Validasi password minimal 6 karakter
-    if (password.length < 6) {
+    // Validasi password minimal 8 karakter
+    if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "Password minimal 6 karakter",
+        message: "Password minimal 8 karakter",
       });
     }
 
@@ -87,6 +87,7 @@ const register = async (req, res) => {
         id: newUser._id,
         name: newUser.name,
         email: newUser.email,
+        phone: newUser.phone,
         createdAt: newUser.createdAt,
       },
     });
@@ -164,6 +165,7 @@ const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         token: token,
       },
     });

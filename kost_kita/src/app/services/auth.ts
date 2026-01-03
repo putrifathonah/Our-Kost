@@ -9,6 +9,8 @@ export interface AuthResponse {
     id: string;
     name: string;
     email: string;
+    phone?: string;
+    token?: string;
     createdAt?: string;
   };
 }
@@ -47,6 +49,11 @@ export class AuthService {
   }
 
   saveUserData(userData: any): void {
+    // Simpan token jika ada
+    if (userData.token) {
+      localStorage.setItem('authToken', userData.token);
+    }
+    // Simpan user data
     localStorage.setItem('user', JSON.stringify(userData));
   }
 

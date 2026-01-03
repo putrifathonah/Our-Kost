@@ -56,17 +56,24 @@ export class Register {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
-        this.isLoading = false;
-        this.successMessage = res.message || 'Registrasi berhasil, silakan login';
-        this.registerForm.reset();
-        // Redirect ke login page setelah 1.5 detik
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1500);
+        if (res.success) {
+          this.isLoading = false;
+          this.successMessage = res.message || 'Registrasi berhasil, silakan login';
+          this.registerForm.reset();
+          // Redirect ke login page setelah 1.5 detik
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1500);
+        } else {
+          this.isLoading = false;
+          this.errorMessage = res.message || 'Registrasi gagal';
+        }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Registrasi gagal';
+        console.error('Register error:', err);
+        this.errorMessage =
+          err.error?.message || err.message || 'Terjadi kesalahan saat registrasi';
       },
     });
   }

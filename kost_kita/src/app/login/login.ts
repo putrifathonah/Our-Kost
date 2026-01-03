@@ -6,11 +6,11 @@ import { AuthService } from '../services/auth';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
+
 export class Login {
   loginForm: FormGroup;
   showPassword = false;
@@ -18,12 +18,7 @@ export class Login {
   successMessage = '';
   errorMessage = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -31,25 +26,44 @@ export class Login {
   }
 
   submitLogin(): void {
-    if (this.loginForm.invalid) {
-      this.errorMessage = 'Mohon lengkapi semua field';
-      return;
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      const formData = this.loginForm.value;
+
+      // Kirim data ke backend API melalui AuthService
+      this.authService.login(formData).subscribe({
+        next: (response) => {
+          console.log('Login successful', response);
+          this.isLoading = false;
+          this.successMessage = response.message || 'Login berhasil!';
+
+          // Simpan user data ke localStorage
+          if (response.data) {
+            this.authService.saveUserData(response.data);
+          }
+
+          // Redirect ke home page setelah 1 detik
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 1000);
+        },
+        error: (error) => {
+          console.error('Login failed', error);
+          this.isLoading = false;
+          this.errorMessage = error.error?.message || 'Email atau password salah';
+
+          // Auto hide error message after 5 seconds
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 5000);
+        },
+      });
+    } else {
+      console.log('Form is not valid');
+      this.errorMessage = 'Mohon lengkapi semua field dengan benar';
     }
-
-    const email = this.loginForm.value.email;
-
-    // 🔑 Ambil data user dari register
-    const registeredUser = JSON.parse(localStorage.getItem('registeredUser') || 'null');
-
-    const user = {
-      id: 'local-1',
-      name: registeredUser?.name || email.split('@')[0],
-      email: email,
-    };
-
-    this.authService.saveUserData(user);
-
-    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
-    this.router.navigateByUrl(returnUrl);
   }
 }

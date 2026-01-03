@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth';
 
 interface UserProfile {
-  id: number;
-  nama: string;
+  id: string;
+  name: string;
   email: string;
-  noTelepon: string;
+  phone: string;
   alamat: string;
   kotaAsal: string;
   noKTP: string;
@@ -23,25 +24,51 @@ interface UserProfile {
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile {
+export class Profile implements OnInit {
   isEditing = false;
   userProfile: UserProfile = {
-    id: 1,
-    nama: 'Rei',
-    email: 'reigtg@email.com',
-    noTelepon: '+62 812-3456-7890',
-    alamat: 'Jl. Rajawali No. 12, Surabaya',
-    kotaAsal: 'Surabaya',
-    noKTP: '3271234567890123',
-    tanggalLahir: '2003-05-15',
-    jenisKelamin: 'Laki-laki',
-    pekerjaan: 'Mahasiswa',
+    id: '',
+    name: '',
+    email: '',
+    phone: '',
+    alamat: '',
+    kotaAsal: '',
+    noKTP: '',
+    tanggalLahir: '',
+    jenisKelamin: '',
+    pekerjaan: '',
     avatar: 'https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg',
   };
 
   editProfile: UserProfile = { ...this.userProfile };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.loadUserProfile();
+  }
+
+  loadUserProfile() {
+    const userData = this.authService.getUserData();
+    console.log('User Data from localStorage:', userData);
+    if (userData) {
+      this.userProfile = {
+        id: userData.id || '',
+        name: userData.name || '',
+        email: userData.email || '',
+        phone: userData.phone || '',
+        alamat: '',
+        kotaAsal: '',
+        noKTP: '',
+        tanggalLahir: '',
+        jenisKelamin: '',
+        pekerjaan: '',
+        avatar: 'https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg',
+      };
+      console.log('Profile after loading:', this.userProfile);
+      this.editProfile = { ...this.userProfile };
+    }
+  }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
