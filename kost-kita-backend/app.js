@@ -37,10 +37,6 @@ app.use("/api/contacts", contactRouter);
 app.use("/housing", housingRouter);
 app.use("/", indexRouter);
 
-// ❌ JANGAN DUPLIKASI ROUTE
-// app.use("/", indexRouter); ← jangan 2x
-// app.use("/housing", housingRouter); ← jangan 2x
-
 // 404 handler (API VERSION)
 app.use((req, res, next) => {
   res.status(404).json({

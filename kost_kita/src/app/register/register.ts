@@ -31,7 +31,7 @@ export class Register {
         name: ['', [Validators.required, Validators.minLength(2)]],
         email: ['', [Validators.required, Validators.email]],
         phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
       },
       { validators: this.passwordMatchValidator }
