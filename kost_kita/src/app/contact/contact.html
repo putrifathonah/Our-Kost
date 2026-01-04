@@ -106,15 +106,35 @@
           <div class="card-body">
             <h4 class="fw-semibold mb-4">Kirim Pesan</h4>
 
-            <form (submit)="onSubmit()">
+            <!-- Pesan Sukses -->
+            <div
+              *ngIf="successMessage"
+              class="alert alert-success alert-dismissible fade show"
+              role="alert"
+            >
+              <i class="bi bi-check-circle me-2"></i>
+              {{ successMessage }}
+            </div>
+
+            <!-- Pesan Error -->
+            <div
+              *ngIf="errorMessage"
+              class="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <i class="bi bi-exclamation-circle me-2"></i>
+              {{ errorMessage }}
+            </div>
+
+            <form [formGroup]="contactForm" (submit)="onSubmit()">
               <div class="mb-3">
                 <label class="form-label">Nama Lengkap</label>
                 <input
                   type="text"
                   class="form-control"
                   placeholder="Masukkan nama Anda"
-                  [(ngModel)]="contactData.name"
-                  name="name"
+                  formControlName="name"
+                  [disabled]="isLoading"
                 />
               </div>
 
@@ -124,8 +144,8 @@
                   type="email"
                   class="form-control"
                   placeholder="email@contoh.com"
-                  [(ngModel)]="contactData.email"
-                  name="email"
+                  formControlName="email"
+                  [disabled]="isLoading"
                 />
               </div>
 
@@ -135,8 +155,8 @@
                   type="text"
                   class="form-control"
                   placeholder="Tentang apa pesan Anda?"
-                  [(ngModel)]="contactData.subject"
-                  name="subject"
+                  formControlName="subject"
+                  [disabled]="isLoading"
                 />
               </div>
 
@@ -146,12 +166,16 @@
                   class="form-control"
                   rows="4"
                   placeholder="Tulis pesan Anda di sini..."
-                  [(ngModel)]="contactData.message"
-                  name="message"
+                  formControlName="message"
+                  [disabled]="isLoading"
                 ></textarea>
               </div>
 
-              <button type="submit" class="btn btn-success w-100">
+              <button
+                type="submit"
+                class="btn btn-success w-100"
+                [disabled]="isLoading || !contactForm.valid"
+              >
                 <i class="bi bi-send-fill me-2"></i>
                 Kirim Pesan
               </button>

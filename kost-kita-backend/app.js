@@ -15,6 +15,7 @@ require("./mvc/models/db");
 var indexRouter = require("./mvc/routes/index");
 var housingRouter = require("./mvc/routes/housing");
 var authRouter = require("./mvc/routes/auth");
+var contactRouter = require("./mvc/routes/contacts");
 
 // CORS
 app.use(cors());
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ ROUTES (INI PENTING)
 app.use("/api/auth", authRouter);
+app.use("/api/contacts", contactRouter);
 app.use("/housing", housingRouter);
 app.use("/", indexRouter);
 

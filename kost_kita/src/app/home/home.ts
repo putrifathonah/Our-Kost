@@ -12,7 +12,6 @@ import { Kos } from './housing.model'; // sesuaikan path model
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
-  // ===== STATE =====
   kosList: Kos[] = [];
   filteredKos: Kos[] = [];
   searchQuery: string = '';
@@ -22,7 +21,6 @@ export class Home implements OnInit {
 
   cities = ['Semua Lokasi', 'Jakarta', 'Bandung', 'Yogyakarta', 'Surabaya'];
 
-  // ===== FALLBACK DATA (DUMMY) =====
   private fallbackData: Kos[] = [
     {
       id: 1,
@@ -109,7 +107,6 @@ export class Home implements OnInit {
 
   constructor(private housingService: HousingService) {}
 
-  // ===== INIT =====
   ngOnInit(): void {
     // Set default dengan fallback data
     this.kosList = this.fallbackData;
@@ -117,7 +114,6 @@ export class Home implements OnInit {
     this.loadKos();
   }
 
-  // ===== LOAD DATA (BACKEND → FALLBACK) =====
   loadKos() {
     // Hanya tampilkan loading jika belum ada data
     if (this.kosList.length === 0) {
@@ -162,7 +158,6 @@ export class Home implements OnInit {
     });
   }
 
-  // ===== SEARCH =====
   onSearch() {
     const query = this.searchQuery.toLowerCase().trim();
 
@@ -179,7 +174,6 @@ export class Home implements OnInit {
     );
   }
 
-  // ===== FILTER BY CITY =====
   filterByCity(city: string) {
     if (city === 'Semua Lokasi') {
       this.selectedCity = 'all';
