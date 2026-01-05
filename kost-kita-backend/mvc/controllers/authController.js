@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+// import model user
 const User = require("../models/user");
+// import jwt
 const jwt = require("jsonwebtoken"); // import jwt
 
 // Exisiting code
@@ -7,9 +9,11 @@ const jwt = require("jsonwebtoken"); // import jwt
 // Register User Baru
 const register = async (req, res) => {
   try {
+    // ambil data dari body request
     const { name, email, phone, password, confirmPassword } = req.body;
 
     // Validasi input
+    // Cek apakah semua field diisi
     if (!name || !email || !phone || !password || !confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -153,7 +157,7 @@ const login = async (req, res) => {
     // 2. Generete JWT Token
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      "Kunci_rahasia_griya_mdp", // Gunakan env variabel di production
+      "Kunci_rahasia", // Gunakan env variabel di production
       { expiresIn: "1h" } // tokon kadaluarsa dalam 1 jam
     );
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+// import controller auth
 const authController = require("../controllers/authController");
 
 // POST /api/auth/register - Register user baru

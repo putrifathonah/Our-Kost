@@ -1,6 +1,9 @@
+// membuat skema user untuk database MongoDB
 const mongoose = require("mongoose");
+// untuk mengamankan password
 const bcrypt = require("bcryptjs");
 
+// definisi skema user
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

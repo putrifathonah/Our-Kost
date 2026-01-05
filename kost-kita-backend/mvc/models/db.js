@@ -1,4 +1,5 @@
 let mongoose = require("mongoose");
+// membaca file .env
 require("dotenv").config();
 
 // ambil dari .env
@@ -8,6 +9,7 @@ mongoose.connect(dbURI, {
     // useNewURLParser: true
 });
 
+// pemberian informasi status koneksi
 mongoose.connection.on("connected", () => {
     console.log("Connected To MongoDB");
 });
